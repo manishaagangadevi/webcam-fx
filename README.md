@@ -69,4 +69,3 @@ webcam-fx/
 ├── utils/
 │   └── renderer.py          HUD overlay
 └── requirements.txt
-
