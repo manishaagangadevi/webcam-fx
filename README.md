@@ -1,104 +1,72 @@
 # webcam-fx
 
-Real-time webcam effects in Python + OpenCV, inspired by [wxll.hx on TikTok](https://www.tiktok.com/@wxll.hx).
+Real-time webcam effects controlled by hand gestures using Python, OpenCV and MediaPipe.
 
-![demo](https://img.shields.io/badge/OpenCV-4.8+-green) ![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![Python](https://img.shields.io/badge/Python-3.10+-blue) ![OpenCV](https://img.shields.io/badge/OpenCV-4.8+-green) ![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10+-orange)
+
+---
+
+## What it does
+
+Point your index fingers at each other to create an effect window in the air. The frame size follows your hands in real time — spread them apart for a bigger frame, bring them closer for a smaller one. Pinch both hands at the same time to cycle through effects.
 
 ---
 
 ## Effects
 
-| Key | Effect | Description |
-|-----|--------|-------------|
-| `T` | **Thermal Camera** | CLAHE + bilateral filter + JET colormap + temporal smoothing |
-| `S` | **TV Scan Lines** | Chromatic aberration, scan-line mask, interlace flicker, rolling wave, vignette |
-| `I` | **Invisibility Cloak** | HSV background subtraction with feathered edge blending |
-| `R` | Reset | Passthrough (raw camera) |
-| `Q` / `ESC` | Quit | |
+| Effect | Description |
+|--------|-------------|
+| **Thermal** | Heat-map style false colour using CLAHE + bilateral filter + JET colormap |
+| **Scan Lines** | CRT monitor simulation with chromatic aberration, interlace flicker and vignette |
+| **Invisibility** | Body segmentation replaces you with the background — no special clothing needed |
+
+---
+
+## How to use
+
+**Frame control:**
+- Hold both hands up with index fingers pointing
+- The effect box spans between your two index fingertips
+- Move hands apart → bigger frame
+- Move hands closer → smaller frame
+
+**Switch effects:**
+- Pinch both hands at the same time (thumb touches index finger on both hands)
+- Cycles: Thermal → Scan Lines → Invisibility → Thermal
+
+**Invisibility tip:**
+- When you first run the program stay out of frame for 2 seconds
+- It captures the background automatically — no green screen needed
 
 ---
 
 ## Setup
 
-```bash
-git clone https://github.com/YOUR_USERNAME/webcam-fx
+git clone https://github.com/manishaagangadevi/webcam-fx
 cd webcam-fx
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-```
-
-## Run
-
-```bash
-# Default: thermal effect, camera 0, 1280x720
 python main.py
 
-# Custom options
-python main.py --camera 1 --effect scanlines --width 1920 --height 1080
-```
+---
+
+## Requirements
+
+opencv-python>=4.8.0
+numpy>=1.24.0
+mediapipe>=0.10.0
 
 ---
 
 ## Project Structure
 
-```
 webcam-fx/
-├── main.py                  # Entry point, key handling, capture loop
+├── main.py                  Entry point, hand tracking, gesture control
 ├── effects/
-│   ├── base.py              # Abstract BaseEffect
-│   ├── thermal.py           # ThermalEffect
-│   ├── scanlines.py         # ScanlineEffect
-│   └── invisibility.py      # InvisibilityEffect
+│   ├── base.py              Abstract base class
+│   ├── thermal.py           Thermal camera effect
+│   ├── scanlines.py         TV scan lines effect
+│   └── invisibility.py      Invisibility via body segmentation
 ├── utils/
-│   └── renderer.py          # HUD overlay + FPS counter
+│   └── renderer.py          HUD overlay
 └── requirements.txt
-```
 
----
-
-## Extending
-
-Add a new effect by:
-
-1. Creating `effects/my_effect.py` extending `BaseEffect`
-2. Implementing `process(self, frame) -> np.ndarray`
-3. Registering it in `main.py`'s `EFFECTS` dict and `KEYBINDINGS`
-
-```python
-# effects/my_effect.py
-from .base import BaseEffect
-
-class MyEffect(BaseEffect):
-    def process(self, frame):
-        # your pipeline here
-        return frame
-```
-
----
-
-## Invisibility Cloak — Calibration Notes
-
-- On launch, stay **out of frame** for ~1.5 seconds (45 frames) while the background is captured.
-- Wear a **red garment** (default) — the HSV mask targets red hues.
-- Change cloak colour by passing `color="green"` or `color="blue"` to `InvisibilityEffect()` in `main.py`.
-- If lighting changes, press `I` to re-activate the effect and re-calibrate.
-
----
-
-## Thermal — Tuning
-
-In `effects/thermal.py`:
-
-```python
-ThermalEffect.COLORMAP = cv2.COLORMAP_INFERNO   # dramatic dark palette
-ThermalEffect.COLORMAP = cv2.COLORMAP_JET       # classic rainbow (default)
-ThermalEffect.COLORMAP = cv2.COLORMAP_HOT       # fire-style
-```
-
-Temporal blend weight `_alpha` (0.0–1.0): higher = more responsive, lower = smoother.
-
----
-
-## License
-
-MIT
