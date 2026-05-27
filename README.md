@@ -8,7 +8,7 @@ Real-time webcam effects controlled by hand gestures using Python, OpenCV and Me
 
 ## Overview
 
-**webcam-fx** turns your webcam into a real-time effects engine controlled entirely by hand gestures — no keyboard, no mouse, no special equipment.
+webcam-fx turns your webcam into a real-time effects engine controlled entirely by hand gestures — no keyboard, no mouse, no special equipment.
 
 Point your index fingers at each other to summon an effect window in mid-air. The frame resizes live as you move your hands. Pinch both hands simultaneously to cycle through effects.
 
@@ -28,10 +28,10 @@ Point your index fingers at each other to summon an effect window in mid-air. Th
 
 | Gesture | Action |
 |---------|--------|
-| 👆 Both index fingers pointing | Creates the effect frame between your fingertips |
-| 🤏 Spread hands apart | Makes the frame bigger |
-| 🤏 Bring hands closer | Makes the frame smaller |
-| 🤌 Pinch both hands at same time | Cycles to next effect |
+| Both index fingers pointing at each other | Creates the effect frame between your fingertips |
+| Spread hands apart | Makes the frame bigger |
+| Bring hands closer | Makes the frame smaller |
+| Pinch both hands at the same time | Cycles to next effect |
 
 ---
 
@@ -83,14 +83,6 @@ webcam-fx/
 │   └── renderer.py          # HUD overlay and FPS counter
 └── requirements.txt
 ```
-
----
-
-## How it looks
-
-| Thermal | Scan Lines | Invisibility |
-|---------|------------|--------------|
-| Heat-map colours | CRT monitor feel | You disappear |
 
 ---
 
